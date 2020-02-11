@@ -1,6 +1,7 @@
 import datetime
 import random
 import math
+import pprint
 from models import *
 
 SALES_DATA = random.choices([0.36, 2.7, 13.36, 0.44],
@@ -23,31 +24,30 @@ def get_lecense_type(price):
         [3, 4], [0.37, 11.48], k=1)[0]
     return license_type
 
-# TODO Made pictures with zero price
+
 def generate_stock_data(sales_data, images_id):
     start_date = datetime.date(2019, 9, 1)
     end_date = datetime.date.today()
     time_delta = (end_date - start_date).days
     avg_downloads = 7.44
     stock_data = []
-    s = 0
-    p = 0
+    end_of_set = 0
     for i in range(time_delta):
         date = start_date + datetime.timedelta(days=i)
         downloads_per_day = get_downloads_count(avg_downloads, i)
-        s += downloads_per_day
-        p = s - downloads_per_day
-        price_set = sales_data[p:s]
-        if downloads_per_day == 0:
-            stock_data.append({'date': date, 'image': 0, 'license': 1, 'sum': 0.00})
+        end_of_set += downloads_per_day
+        start_of_set = end_of_set - downloads_per_day
+        # print("{} - {}".format(start_of_set, end_of_set))
+        price_set = sales_data[start_of_set:end_of_set]
         for price in price_set:
-            day = {'date': date, 'image': random.choices(
-                images_id, [random.expovariate(10) * 100 for _ in range(100)], k=1)[0], 'license': get_lecense_type(price), 'sum': price}
+            day = {'date': date, 'image': random.choice(images_id),
+                   'license': get_lecense_type(price), 'sum': price}
             stock_data.append(day)
     return stock_data
 
 # generate_stock_data(SALES_DATA, IMAGES_ID)
+# pprint.pprint(generate_stock_data(SALES_DATA, IMAGES_ID), indent=2, width=160)
 
 
 # Licences.insert_many(LICENCES).execute()
-# Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
+Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
