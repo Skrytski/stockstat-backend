@@ -50,4 +50,4 @@ def generate_stock_data(sales_data, images_id):
 
 
 # Licences.insert_many(LICENCES).execute()
-Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
+# Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
