@@ -1,11 +1,12 @@
-# import json
+import datetime
 from decimal import Decimal
 from flask import Flask, jsonify
-from models import *
 from flask.json import dumps
-import datetime
+from flask_cors import CORS
+from models import *
 app = Flask(__name__)
 app.config.from_object(__name__)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 @app.route('/')
@@ -25,7 +26,7 @@ def get_all():
     query = (Sales
              .select(Sales.date, fn.COUNT(Sales.image), fn.SUM(Sales.sum))
              .group_by(Sales.date))
-    data = dumps([row for row in query.dicts()], indent=1,
+    data = dumps([row for row in query.dicts()], indent=4,
                  default=default, sort_keys=False)
     return data
 

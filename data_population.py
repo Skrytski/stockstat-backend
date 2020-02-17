@@ -26,7 +26,7 @@ def get_lecense_type(price):
 
 
 def generate_stock_data(sales_data, images_id):
-    start_date = datetime.date(2019, 9, 1)
+    start_date = datetime.date(2019, 1, 1)
     end_date = datetime.date.today()
     time_delta = (end_date - start_date).days
     avg_downloads = 7.44
@@ -50,4 +50,4 @@ def generate_stock_data(sales_data, images_id):
 
 
 # Licences.insert_many(LICENCES).execute()
-# Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
+Sales.insert_many(generate_stock_data(SALES_DATA, IMAGES_ID)).execute()
